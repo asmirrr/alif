@@ -1,26 +1,77 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafaf8;
+  --foreground: #1a1f1e;
+  --primary: #0d6b4e;
+  --primary-foreground: #ffffff;
+  --secondary: #f3f1ed;
+  --secondary-foreground: #1a1f1e;
+  --muted: #f3f1ed;
+  --muted-foreground: #6b7280;
+  --accent: #e8f5f0;
+  --accent-foreground: #0d6b4e;
+  --border: #e8e4de;
+  --input: #e8e4de;
+  --ring: #0d6b4e;
+  --card: #ffffff;
+  --card-foreground: #1a1f1e;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #0f1412;
+  --foreground: #e8ece9;
+  --primary: #2dd4a0;
+  --primary-foreground: #0f1412;
+  --secondary: #1c2420;
+  --secondary-foreground: #e8ece9;
+  --muted: #1c2420;
+  --muted-foreground: #9ca89f;
+  --accent: #1a2e26;
+  --accent-foreground: #2dd4a0;
+  --border: #2a332e;
+  --input: #2a332e;
+  --ring: #2dd4a0;
+  --card: #141a17;
+  --card-foreground: #e8ece9;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.font-arabic {
+  font-family: var(--font-arabic), "Noto Naskh Arabic", serif;
+}
+
+* {
+  border-color: var(--border);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  transition: background-color 200ms ease, color 200ms ease;
 }
