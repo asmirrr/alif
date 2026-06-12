@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Naskh_Arabic } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 
 import { AppShell } from "@/components/layout/app-shell";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -46,7 +47,9 @@ export default function RootLayout({
             <AppShell>{children}</AppShell>
           </LocationProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
 }
+
