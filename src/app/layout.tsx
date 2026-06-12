@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Noto_Naskh_Arabic } from "next/font/google";
 
 import { AppShell } from "@/components/layout/app-shell";
 import { ThemeProvider } from "@/components/theme-provider";
+import { LocationProvider } from "@/lib/location-context";
 
 import "./globals.css";
 
@@ -41,7 +42,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange={false}
         >
-          <AppShell>{children}</AppShell>
+          <LocationProvider>
+            <AppShell>{children}</AppShell>
+          </LocationProvider>
         </ThemeProvider>
       </body>
     </html>

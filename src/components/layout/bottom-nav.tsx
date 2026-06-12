@@ -13,7 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/", label: "Home", icon: Home },
+  { href: "/dashboard", label: "Home", icon: Home },
   { href: "/prayer-times", label: "Times", icon: Clock },
   { href: "/qibla", label: "Qibla", icon: Compass },
   { href: "/prayer-tracking", label: "Track", icon: CheckCircle2 },
@@ -29,7 +29,7 @@ export function BottomNav() {
         <div className="mx-auto flex max-w-lg items-stretch justify-around px-2 pb-[env(safe-area-inset-bottom)]">
           {navItems.map(({ href, label, icon: Icon }) => {
             const isActive =
-              href === "/" ? pathname === "/" : pathname.startsWith(href);
+              href === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(href);
 
             return (
               <Link
@@ -59,7 +59,7 @@ export function BottomNav() {
         <div className="flex flex-col gap-1">
           {navItems.map(({ href, label, icon: Icon }) => {
             const isActive =
-              href === "/" ? pathname === "/" : pathname.startsWith(href);
+              href === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(href);
 
             return (
               <Link

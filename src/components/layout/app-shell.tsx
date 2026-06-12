@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { cn } from "@/lib/utils";
 
@@ -7,6 +10,19 @@ interface AppShellProps {
 }
 
 export function AppShell({ children, className }: AppShellProps) {
+  const pathname = usePathname();
+  const isLanding = pathname === "/";
+
+  if (isLanding) {
+    return (
+      <div className="min-h-dvh bg-background w-full overflow-x-hidden">
+        <main className={cn("w-full min-h-dvh", className)}>
+          {children}
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-dvh bg-background">
       <div className="md:flex md:min-h-dvh">

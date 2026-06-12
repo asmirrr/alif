@@ -107,3 +107,113 @@ export function getWeekDates(reference: Date = new Date()): string[] {
     return d.toISOString().slice(0, 10);
   });
 }
+
+export function convert24to12(time24: string): string {
+  if (!time24) return "";
+  const cleanTime = time24.split(" ")[0];
+  const [hourStr, minStr] = cleanTime.split(":");
+  let hour = parseInt(hourStr, 10);
+  const min = parseInt(minStr, 10);
+  if (isNaN(hour) || isNaN(min)) return time24;
+  const ampm = hour >= 12 ? "PM" : "AM";
+  hour = hour % 12;
+  hour = hour ? hour : 12;
+  const minFormatted = min.toString().padStart(2, "0");
+  return `${hour}:${minFormatted} ${ampm}`;
+}
+
+export function getHaversineDistanceKm(
+  lat1: number,
+  lon1: number,
+  lat2: number = 21.4225,
+  lon2: number = 39.8262,
+): number {
+  const R = 6371; // Radius of the earth in km
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+export function getCardinalDirection(degrees: number): string {
+  const directions = [
+    "North",
+    "North-Northeast",
+    "Northeast",
+    "East-Northeast",
+    "East",
+    "East-Southeast",
+    "Southeast",
+    "South-Southeast",
+    "South",
+    "South-Southwest",
+    "Southwest",
+    "West-Southwest",
+    "West",
+    "West-Northwest",
+    "Northwest",
+    "North-Northwest",
+  ];
+  const index = Math.round(degrees / 22.5) % 16;
+  return directions[index];
+}
+
+export function getPrayerTimesWithCurrentNext(
+  prayers: PrayerTime[],
+  now: Date = new Date(),
+): PrayerTime[] {
+  const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+  // Find trackable prayers and parse times in minutes
+  const trackable = prayers.filter((p) => p.name !== "sunrise");
+  const parsed = trackable.map((p) => ({
+    prayer: p,
+    minutes: parseTimeToMinutes(p.time),
+  }));
+
+  parsed.sort((a, b) => a.minutes - b.minutes);
+
+  let currentIndex = -1;
+
+  for (let i = 0; i < parsed.length; i++) {
+    const currentP = parsed[i];
+    const nextP = parsed[(i + 1) % parsed.length];
+
+    const currMin = currentP.minutes;
+    const nextMin = nextP.minutes;
+
+    if (nextMin < currMin) {
+      // Midnight wrap-around (Isha -> Fajr)
+      if (nowMinutes >= currMin || nowMinutes < nextMin) {
+        currentIndex = i;
+        break;
+      }
+    } else {
+      if (nowMinutes >= currMin && nowMinutes < nextMin) {
+        currentIndex = i;
+        break;
+      }
+    }
+  }
+
+  if (currentIndex === -1) {
+    currentIndex = parsed.length - 1; // Default fallback to Isha
+  }
+
+  const currentPrayerName = parsed[currentIndex].prayer.name;
+  const nextPrayerName =
+    parsed[(currentIndex + 1) % parsed.length].prayer.name;
+
+  return prayers.map((p) => ({
+    ...p,
+    isCurrent: p.name === currentPrayerName,
+    isNext: p.name === nextPrayerName,
+  }));
+}
+
